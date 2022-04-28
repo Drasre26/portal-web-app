@@ -1,7 +1,7 @@
 <template>
   <div class="about">
      <br/>
-    <Banner></Banner>
+    <Banner class="animate__animated animate__backInLeft"></Banner>
     <br/>
     <Inscripcion></Inscripcion>
     <h1>This is an about page</h1>
