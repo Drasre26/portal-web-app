@@ -37,14 +37,11 @@
 
       <v-row>
         <v-col cols="4">
-          <v-subheader>Suffix for time zone</v-subheader>
+          <v-subheader>Teléfono:</v-subheader>
         </v-col>
         <v-col cols="8">
           <v-text-field
-            label="Label Text"
-            value="12:30:00"
-            type="time"
-            suffix="PST"
+            label="Telefono"
           ></v-text-field>
         </v-col>
       </v-row>
