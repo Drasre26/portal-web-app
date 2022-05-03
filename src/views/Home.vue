@@ -49,7 +49,7 @@
       <!--Waves end-->
     </div>
     <!--Header ends-->
-    <v-row>
+    <v-row id="inscripcion">
       <v-col>
         <Inscripcion />
       </v-col>

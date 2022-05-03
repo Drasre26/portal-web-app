@@ -2,6 +2,8 @@ import Vue from 'vue'
 import vuex from '../store/index'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
+import Login from '../components/Login/login.vue'
+import Perfil from '../components/Admin/Perfil/Perfil.vue'
 
 Vue.use(VueRouter)
 
@@ -11,6 +13,18 @@ const routes = [
     name: 'Home',
     component: Home,
     meta:{protegido:false}
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    component: Login,
+    meta:{protegido:false}
+  },
+  {
+    path: '/admin/perfil',
+    name: 'Perfil',
+    component: Perfil,
+    meta:{protegido:true}
   },
   {
     path: '/about',

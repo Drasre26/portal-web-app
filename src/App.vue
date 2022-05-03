@@ -28,27 +28,16 @@
       <v-spacer></v-spacer>
 
       <v-btn
-        to="/about"
+        to="/#inscripcion"
         text
       >
-        <span class="mr-2">Page 1</span>
+        <span class="mr-2">Inscribirme</span>
         <v-icon>mdi-open-in-new</v-icon>
-      </v-btn>
-      <v-btn
-        href="#inscripcion"
-        text
-      >
-        <span class="mr-2">Inscripcion</span>
       </v-btn>
 
-      <v-btn
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-        text
-      >
-        <span class="mr-2">Login</span>
-        <v-icon>mdi-open-in-new</v-icon>
-      </v-btn>
+      <v-btn class="ml-2" fab small color="black" to="/login">
+      <v-icon>mdi-account</v-icon>
+    </v-btn>
     </v-app-bar>
 
     <v-main>
