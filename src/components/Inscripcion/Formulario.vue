@@ -1,14 +1,16 @@
 <template>
-  <div>
-    <h2>{{tituloformulario}}</h2>
-    <hr />
+  <v-card class="mx-auto" max-width="650" outlined>
+  
     <v-container fluid>
+      <h2>{{tituloformulario}}</h2>
+      <hr />
+      <br />
       <v-row>
         <v-col cols="4">
           <v-subheader>Nombre:</v-subheader>
         </v-col>
         <v-col cols="8">
-          <v-text-field v-model="usuario.nombre" label="Nombre"></v-text-field>
+          <v-text-field solo v-model="usuario.nombre" label="Nombre"></v-text-field>
         </v-col>
       </v-row>
 
@@ -17,7 +19,7 @@
           <v-subheader>Apellido:</v-subheader>
         </v-col>
         <v-col cols="8">
-          <v-text-field
+          <v-text-field solo
           v-model="usuario.apellido"
             label="Apellido"
           ></v-text-field>
@@ -29,7 +31,7 @@
           <v-subheader>Email:</v-subheader>
         </v-col>
         <v-col cols="8">
-          <v-text-field
+          <v-text-field solo
            v-model="usuario.email"
             label="Email"
             placeholder="adali@micorreo.com"
@@ -42,7 +44,7 @@
           <v-subheader>Teléfono:</v-subheader>
         </v-col>
         <v-col cols="8">
-          <v-text-field
+          <v-text-field solo
           v-model="usuario.telefono"
             label="Telefono"
           ></v-text-field>
@@ -53,7 +55,7 @@
           <v-subheader>Usuario:</v-subheader>
         </v-col>
         <v-col cols="8">
-          <v-text-field
+          <v-text-field solo
           v-model="usuario.usuario"
             label="Usuario"
           ></v-text-field>
@@ -64,7 +66,7 @@
           <v-subheader>Contraseña:</v-subheader>
         </v-col>
         <v-col cols="8">
-          <v-text-field
+          <v-text-field solo
           v-model="usuario.password"
             type="password"
             label="Contraseña"
@@ -81,7 +83,7 @@
         </v-col>
       </v-row>
     </v-container>
-  </div>
+  </v-card>
 </template>
 <script>
 import axios from 'axios'
