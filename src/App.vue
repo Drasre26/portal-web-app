@@ -24,7 +24,13 @@
           width="100"
         />
       </div>
-
+      <v-btn
+        class="ml-5"
+        to="/borrar"
+        text
+      >
+      borrar
+      </v-btn>
       <v-spacer></v-spacer>
 
       <v-btn

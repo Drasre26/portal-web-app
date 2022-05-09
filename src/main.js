@@ -3,6 +3,9 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import vuetify from './plugins/vuetify'
+import * as dayjs from 'dayjs'
+import 'dayjs/locale/es'
+dayjs.locale('es')
 
 Vue.config.productionTip = false
 

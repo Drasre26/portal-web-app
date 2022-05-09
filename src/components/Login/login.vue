@@ -145,11 +145,16 @@ export default {
       autenticacion(){
 
           this.spinner=true
+      
          axios.post(`${this.urlApi}/auth/login`,this.user).then(res=>{
-           console.log(res.data)
+           const rolusuario = res.data.usuario.rol
                 this.spinner=false
                 this.$store.dispatch("postAutenticacion",res.data)
-                this.$router.push('/admin/perfil')
+                if(rolusuario==="Participante"){
+                  this.$router.push('/admin/perfil')
+                }else{
+                  this.$router.push('/admin/Administrador')
+                }
              
            
 

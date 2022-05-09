@@ -108,7 +108,23 @@ export default {
       usuario: "",
       password: "",
     },
-
+    mensajeSMS:{
+      body: "FELICIDADES ESTA INSCRITO AL CONGRESO TECNOLOGICO UMG 2022",
+      from: "+19853284441",
+      to: "+502"
+    },
+    mensajeEmail:{
+      from: '"Inscripción Realizada 👻" <draslyrafael@cunsurori.edu.gt>', // sender address
+      to: "pedroumg2015@gmail.com", // list of receivers
+      subject: "Inscripcion Congreso Tecnologico ✔", // Subject line
+      text: "FELICIDADES ESTA INSCRITO AL CONGRESO TECNOLOGICO UMG 2022", // plain text body
+      html: `
+      <h3>Tiene 5 dias para realizar el pago de su inscripcion
+      Puede realizar los pagos a la cuenta
+      BANRURAL: Cuenta Monetaria No. 5689756 a nombre de CONGRESOS UMG
+      </h3>
+      `, // html body
+    }
     }),
     created(){
       this.main()
@@ -140,17 +156,46 @@ export default {
       },
       async crearUsuario(){
         try {
-          await axios.post(`${this.urlApi}/usuarios`,this.usuario)
+
+          //Creamos el usuario
+          const {data} = await axios.post(`${this.urlApi}/usuarios`,this.usuario)
+          //Suscribimos el usuario al Evento
+          await this.suscripcionUsuario(data)
+
+          //Enviamos mensaje al telefono del usuario 
+          this.mensajeSMS.to = this.mensajeSMS.to+this.usuario.telefono
+          await axios.post(`${this.urlApi}/usuarios/mensaje`,this.mensajeSMS)
+
+
+          //Mostramos notificacion de operacion exitosa
           this.notificationSwal('success','Ha sido registrado exitosamente','Revise su correo electronico para activar inscripcion')
-          this.usuario = Object.assign({}, this.default)
+          //---------this.usuario = Object.assign({}, this.default)
         } catch (error) {
           this.notificationSwal('error','Error en su registro','Intentelo mas tarde')
+          console.log(error)
+        }
+      },
+      async suscripcionUsuario(item){
+        
+        const id = parseInt(item.idusuario)
+        const suscripcion = { idusuario:id , idevento: 1 }
+
+        this.mensajeEmail.to = item.email
+        try {
+          console.log(this.mensajeEmail)
+         
+         const {data} = await axios.post(`${this.urlApi}/suscripciones`,suscripcion)
+         await axios.post(`${this.urlApi}/usuarios/enviarcorreo`,this.mensajeEmail)
+        console.log(data)
+        } catch (error) {
           console.log(error)
         }
       },
       async actualizarUsuario(){
         try {
          const {data} =  await axios.put(`${this.urlApi}/usuarios/${this.usuario.idusuario}`,this.usuario)
+          this.$store.dispatch("postAutenticacion",data)
+          this.main()
           this.notificationSwal('success','Usuario Actualizado','El usuario se actualizo correctamente')
           this.usuario = Object.assign({}, data)
         } catch (error) {

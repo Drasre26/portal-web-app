@@ -6,6 +6,7 @@
                     <h1>Congreso Tecnologico</h1>
                     <h3>Universidad Mariano Galvez</h3>
 
+
                         <v-row>
                             <v-col>
                                 <v-alert                

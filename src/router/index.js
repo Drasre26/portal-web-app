@@ -4,6 +4,9 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Login from '../components/Login/login.vue'
 import Perfil from '../components/Admin/Perfil/Perfil.vue'
+//import Administrador from '../components/Admin/Eventos/MainEventos.vue'
+import Participantes from '../components/Admin/Eventos/ParticipantesEvento.vue'
+import MostrarEvento from '../components/Admin/Eventos/MostrarEvento.vue'
 
 Vue.use(VueRouter)
 
@@ -21,19 +24,22 @@ const routes = [
     meta:{protegido:false}
   },
   {
+    path: '/mostrar/vento/:idevento',
+    name: 'mostrarevento',
+    component: MostrarEvento,
+    meta:{protegido:false}
+  },
+  {
     path: '/admin/perfil',
     name: 'Perfil',
     component: Perfil,
     meta:{protegido:true}
   },
   {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue'),
-    meta:{protegido:false}
+    path: '/admin/Administrador',
+    name: 'Administrador',
+    component: Participantes,
+    meta:{protegido:true}
   }
 ]
 
@@ -47,8 +53,17 @@ const router = new VueRouter({
 //Validamos que el usuario este Autenticado
 router.beforeEach((to, from, next) => {
   const usuarioAutenticado = vuex.getters.getAutenticado;
-  console.log('to.name ==>',to.name )
-  if (to.name == 'Login' && usuarioAutenticado) next({ name: 'AdminInicio' })
+  const {usuario} = vuex.getters.usuarioAuth;
+  
+  if (to.name == 'Login' && usuarioAutenticado){ 
+    
+    if(usuario.rol==="Participante"){
+      next({ name: 'Perfil' })
+    }else{
+      next({ name: 'Administrador' })
+    }
+  
+  }
   else next()
 })
 
