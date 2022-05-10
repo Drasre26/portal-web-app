@@ -7,6 +7,9 @@ import Perfil from '../components/Admin/Perfil/Perfil.vue'
 //import Administrador from '../components/Admin/Eventos/MainEventos.vue'
 import Participantes from '../components/Admin/Eventos/ParticipantesEvento.vue'
 import MostrarEvento from '../components/Admin/Eventos/MostrarEvento.vue'
+import CrudEventos from '../components/Admin/Eventos/Eventos.vue'
+import CrearEvento from '../components/Admin/Eventos/CrearEvento.vue'
+
 
 Vue.use(VueRouter)
 
@@ -39,6 +42,19 @@ const routes = [
     path: '/admin/Administrador',
     name: 'Administrador',
     component: Participantes,
+    meta:{protegido:true}
+  },
+  {
+    path: '/admin/eventos',
+    name: 'Eventos',
+    component: CrudEventos,
+    meta:{protegido:true}
+  },
+  {
+    path: '/admin/eventos/crear/:idevento?',
+    name: 'CrearEvento',
+    
+    component: CrearEvento,
     meta:{protegido:true}
   }
 ]

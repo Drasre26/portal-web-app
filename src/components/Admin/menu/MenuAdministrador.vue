@@ -52,7 +52,7 @@
       >
         <v-list-item>
           <v-list-item-icon>
-            <v-icon >mdi-account-group</v-icon>
+            <v-icon >mdi-menu-right</v-icon>
           </v-list-item-icon>
 
           <v-list-item-content>
@@ -60,9 +60,9 @@
           </v-list-item-content>
         </v-list-item>
 
-        <v-list-item>
+        <v-list-item to="/admin/eventos">
           <v-list-item-icon>
-            <v-icon >mdi-account-group</v-icon>
+            <v-icon >mdi-menu-right</v-icon>
           </v-list-item-icon>
 
           <v-list-item-content>
@@ -73,7 +73,7 @@
 
         <v-list-item>
           <v-list-item-icon>
-            <v-icon >mdi-account-group</v-icon>
+            <v-icon >mdi-menu-right</v-icon>
           </v-list-item-icon>
 
           <v-list-item-content>
