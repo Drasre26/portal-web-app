@@ -6,9 +6,10 @@ import Login from '../components/Login/login.vue'
 import Perfil from '../components/Admin/Perfil/Perfil.vue'
 //import Administrador from '../components/Admin/Eventos/MainEventos.vue'
 import Participantes from '../components/Admin/Eventos/ParticipantesEvento.vue'
-import MostrarEvento from '../components/Admin/Eventos/MostrarEvento.vue'
 import CrudEventos from '../components/Admin/Eventos/Eventos.vue'
 import CrearEvento from '../components/Admin/Eventos/CrearEvento.vue'
+
+import Pruebas from '../components/Evento/Evento.vue'
 
 
 Vue.use(VueRouter)
@@ -21,15 +22,15 @@ const routes = [
     meta:{protegido:false}
   },
   {
-    path: '/login',
-    name: 'Login',
-    component: Login,
+    path: '/pruebas',
+    name: 'Pruebas',
+    component: Pruebas,
     meta:{protegido:false}
   },
   {
-    path: '/mostrar/vento/:idevento',
-    name: 'mostrarevento',
-    component: MostrarEvento,
+    path: '/login',
+    name: 'Login',
+    component: Login,
     meta:{protegido:false}
   },
   {
@@ -39,8 +40,8 @@ const routes = [
     meta:{protegido:true}
   },
   {
-    path: '/admin/Administrador',
-    name: 'Administrador',
+    path: '/admin/participantes',
+    name: 'Participantes',
     component: Participantes,
     meta:{protegido:true}
   },

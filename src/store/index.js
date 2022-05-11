@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import Auth from '../components/Login/auth.vuex'
+import Evento from '../components/Admin/Eventos/eventos.vuex'
 
 Vue.use(Vuex)
 
@@ -26,6 +27,6 @@ export default new Vuex.Store({
     
   },
   modules: {
-    Auth
+    Auth,Evento
   }
 })

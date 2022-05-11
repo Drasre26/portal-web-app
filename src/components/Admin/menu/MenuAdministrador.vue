@@ -50,7 +50,7 @@
         dense
         color="indigo"
       >
-        <v-list-item>
+        <v-list-item to="/admin/participantes">
           <v-list-item-icon>
             <v-icon >mdi-menu-right</v-icon>
           </v-list-item-icon>

@@ -73,7 +73,7 @@
 
         <ckeditor :editor="editor" v-model="evento.descripcion" :config="editorConfig"></ckeditor>
         <br>
-        <v-btn color="teal" @click="postItem" v-if="evento.idevento" dark>Editar</v-btn>
+        <v-btn color="teal" @click="putItem" v-if="evento.idevento" dark>Editar</v-btn>
         <v-btn color="teal" @click="postItem"  v-else dark>Crear</v-btn>
         </v-sheet>
     </v-col>
@@ -88,6 +88,7 @@ import * as dayjs from 'dayjs'
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 export default {
+  // empty
   components:{
         MenuAdministrador
     },
@@ -142,14 +143,14 @@ export default {
           const idevento = this.$route.params.idevento
           
           if(idevento){
-
-              try {
-                const {data} = await axios.get(`${this.urlApi}/eventos/${idevento}`)
-                this.evento = data;
-              } catch (error) {
-                console.log(error)
-              }
+            try {
+              const {data} = await axios.get(`${this.urlApi}/eventos/${idevento}`)
+              this.evento = data;
+            } catch (error) {
+              console.log(error)
             }
+             
+          }
           
       }, 
 

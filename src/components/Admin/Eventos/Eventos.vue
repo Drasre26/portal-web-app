@@ -72,7 +72,7 @@ export default {
       headers: [       
         { text: 'Titulo', value: 'titulo' },
         { text: 'Subtitulo', value: 'subtitulo' },
-        { text: 'Descripcion',align: 'center', value: 'descripcion' },      
+        { text: 'Fecha',align: 'center', value: 'fecha' },      
         { text: 'Estado',align: 'center', value: 'estado',sortable: false, },
         { text: 'Actions',align: 'center', value: 'actions', sortable: false },
       ],

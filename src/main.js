@@ -8,7 +8,7 @@ import CKEditor from '@ckeditor/ckeditor5-vue2';
 import 'dayjs/locale/es'
 dayjs.locale('es')
 
-Vue.use( CKEditor );
+Vue.use(CKEditor);
 Vue.config.productionTip = false
 
 new Vue({
