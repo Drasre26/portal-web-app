@@ -22,7 +22,7 @@ const routes = [
     meta:{protegido:false}
   },
   {
-    path: '/pruebas',
+    path: '/pruebas/:idevento?',
     name: 'Pruebas',
     component: Pruebas,
     meta:{protegido:false}

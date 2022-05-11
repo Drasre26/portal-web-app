@@ -61,8 +61,10 @@
                 <h2>Descripcion Evento</h2>
                 <v-divider></v-divider>
                 <div v-html="evento.descripcion">
-
                 </div>
+                <v-card v-html="evento.googlemaps">
+
+                </v-card>
              </v-sheet>
         </v-col>
     </v-row>
@@ -81,8 +83,14 @@ export default {
     data: () => ({
         evento:null,
     }),
-    created() {
-        this.main()
+    async created() {
+      const idevento = this.$route.params.idevento
+      if(idevento){
+         await this.getEventoPorId(idevento)
+      }else{
+        await this.main()
+      }
+        
     },
     computed:{
         urlApi(){
@@ -94,13 +102,22 @@ export default {
             try {
                 const {data} = await axios.get(`${this.urlApi}/eventos`)
                 data[0].fecha = dayjs(data[0].fecha).format('YYYY-MM-DD')
-                console.log(data[0])
+                //console.log(data[0])
                 this.evento = data[0]
             } catch (error) {
                 //eventos:null
                 console.log(error)
             }
-        }
+        },
+        async getEventoPorId(idevento){
+          
+          try {
+            const {data} =  await axios.get(`${this.urlApi}/eventos/${idevento}`)
+              this.evento=data
+          } catch (error) {
+              console.log(error)
+          }   
+        },
     }
 }
 </script>

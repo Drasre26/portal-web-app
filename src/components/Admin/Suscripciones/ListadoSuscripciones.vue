@@ -51,11 +51,10 @@
       </v-img>
 
       <v-file-input
+        type="file"
         v-model="boleta"
         label="Subir Boleta"
         accept="image/png, image/jpeg, image/bmp"
-        chips
-        filled
         prepend-icon="mdi-camera"
         @change="subirImagen(item)"
       ></v-file-input>
@@ -75,8 +74,8 @@ import Swal from "sweetalert2";
 
 export default {
   data: () => ({
-    boleta:'',
-    imagen:'',
+    boleta:[],
+    imagen:[],
     suscripciones: [],
     idusuario: 0,
     suscripcion: {

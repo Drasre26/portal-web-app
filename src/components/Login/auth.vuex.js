@@ -15,6 +15,7 @@ export default {
         },
         updateAuth(state,estado){
             state.autenticado = estado
+            state.usuario = false
         }
     },
     actions:{

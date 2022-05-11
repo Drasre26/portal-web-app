@@ -14,6 +14,7 @@
           min-width="100"
           src="./assets/LogoMariano.png"
           width="200"
+          @click="$router.push('/')"
         />
       </div>
       <v-btn
@@ -32,6 +33,9 @@
         <v-icon>mdi-whatsapp</v-icon>
       </v-btn>
 
+      <v-btn class="ml-2" outlined color="white" @click="logOut" v-if="getUsuario.rol"> 
+        Cerrar Sesión
+      </v-btn>
       <v-btn class="ml-2" fab small color="black" to="/login">
       <v-icon>mdi-account</v-icon>
     </v-btn>
@@ -47,10 +51,17 @@
 
 export default {
   name: 'App',
-
-  data: () => ({
-    //
-  }),
+  computed:{
+    getUsuario(){
+      return this.$store.getters.usuarioAuth.usuario
+    }
+  },
+  methods:{
+    logOut(){
+         this.$store.dispatch('updateAuth',false)
+         this.$router.push('/')
+       },
+  }
 };
 </script>
 <style scoped>

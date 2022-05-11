@@ -18,6 +18,12 @@
                 placeholder="La importancia de la eduacion virtual para los estudiantes"
                 outlined
             ></v-text-field>
+            <v-text-field
+                v-model="evento.googlemaps"
+                label="Google Maps *"
+                placeholder="Pegue el la ubicacion del lugar del evento"
+                outlined
+            ></v-text-field>
             <v-row>
               <v-col cols="4">
             <!-- Input para la fecha -->
@@ -100,15 +106,11 @@ export default {
       editorConfig: {
         toolbar: [ 'heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', '|', 'blockQuote', 'insertTable',  '|', 'undo', 'redo' ],
       },
-      editedItem: {
-        nombre: '',
-        descripcion: '',
-        condicion: 1,
-      },
       evento: {
         titulo: '',
         subtitulo: '',
         portada: '',
+        googlemaps:'',
         descripcion: '<p>Content of the editor.</p>',
         limiteparticipantes:5,
         fecha:dayjs().format('YYYY-MM-DD'),
@@ -118,7 +120,8 @@ export default {
         titulo: '',
         subtitulo: '',
         portada: '',
-        descripcion: 1,
+        googlemaps:'',
+        descripcion: '<p>Content of the editor.</p>',
         limiteparticipantes:5,
         fecha:dayjs().format(),
 
@@ -171,8 +174,7 @@ export default {
             this.alertError()
         }
       
-      
-    },
+      },
       async postItem(){
         this.evento.limiteparticipantes = parseInt(this.evento.limiteparticipantes);
         try {

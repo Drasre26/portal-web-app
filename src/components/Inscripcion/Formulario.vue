@@ -5,7 +5,28 @@
       <h2>{{tituloformulario}}</h2>
       <hr />
       <br />
+
+      <v-row v-if="getUsuario">
+        <v-col cols="12">
+         <v-file-input
+            type="file"
+            v-model="imagen"
+            accept="image/png, image/jpeg, image/bmp"
+            prepend-icon="mdi-camera"
+            label="Cambiar Imagen Perfil"
+            @change="subirImagen()"
+          ></v-file-input>
+        </v-col>
+        <v-col cols="12">
+          <v-img alt="usuario" class="avatar"
+          :src="`${urlApi}/imagenes/${usuario.foto}`"
+          >
+          </v-img>
+        </v-col>
+      </v-row>
+
       <v-row>
+    
         <v-col cols="4">
           <v-subheader>Nombre:</v-subheader>
         </v-col>
@@ -13,7 +34,7 @@
           <v-text-field solo v-model="usuario.nombre" label="Nombre"></v-text-field>
         </v-col>
       </v-row>
-
+  
       <v-row>
         <v-col cols="4">
           <v-subheader>Apellido:</v-subheader>
@@ -74,7 +95,7 @@
         </v-col>
       </v-row>
       <v-row>
-        <pre>{{getUsuario}}</pre>
+        
         <v-col>
           <v-spacer></v-spacer>
           <v-btn color="orange" v-if="getUsuario" dark @click="actualizarUsuario">Editar Perfil</v-btn>
@@ -91,10 +112,12 @@ import Swal from 'sweetalert2'
 
 export default {
   data: () => ({
+    imagen:[],
     tituloformulario:'Inscripcion',
     usuario:{
       nombre: "",
       apellido: "",
+      foto:"default.png",
       telefono: "",
       email: "",
       usuario: "",
@@ -103,6 +126,7 @@ export default {
     default:{
       nombre: "",
       apellido: "",
+      foto:"default.png",
       telefono: "",
       email: "",
       usuario: "",
@@ -203,6 +227,27 @@ export default {
           console.log(error)
         }
       },
+      async subirImagen() {
+
+        const formData = new FormData();
+        formData.append("file", this.imagen);
+      
+        try {
+          console.log('Entro aqui !')
+          const {data} = await axios.post(`${this.urlApi}/imagenes/upload`, formData);
+          
+          //this.imagen = URL.createObjectURL(this.boleta)
+          this.usuario.foto = data.filename
+          //this.imagen = data.filename
+
+         //await this.actualizarUsuario()
+        } catch (error) {
+            this.imagen = ""
+            console.log(error)
+            this.alertError()
+        }
+      
+      },
       //Notificacion Swal
       notificationSwal(icon,title,text){
             Swal.fire({
@@ -214,3 +259,13 @@ export default {
     }
 }
 </script>
+<style scoped>
+.avatar {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 300px;
+  height: 300px;
+  border-radius: 10px;
+}
+</style>
