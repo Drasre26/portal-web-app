@@ -8,7 +8,7 @@
       <div class="d-flex align-center">
         
         <v-img
-          alt="Vuetify Name"
+          alt="Logo Mariano Galvez"
           class="shrink mt-1 hidden-sm-and-down"
           contain
           min-width="100"
@@ -25,12 +25,11 @@
       </v-btn>
       <v-spacer></v-spacer>
 
-      <v-btn
-        to="/#inscripcion"
-        text
-      >
-        <span class="mr-2">Inscribirme</span>
-        <v-icon>mdi-open-in-new</v-icon>
+      <v-btn icon large  color="white" href="https://www.facebook.com/Drasly.RE" target="_blank">
+        <v-icon>mdi-facebook</v-icon>
+      </v-btn>
+      <v-btn icon large  color="white" href="https://api.whatsapp.com/send?phone=50257133087" target="_blank">
+        <v-icon>mdi-whatsapp</v-icon>
       </v-btn>
 
       <v-btn class="ml-2" fab small color="black" to="/login">
