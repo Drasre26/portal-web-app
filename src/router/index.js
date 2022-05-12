@@ -1,15 +1,19 @@
 import Vue from 'vue'
 import vuex from '../store/index'
 import VueRouter from 'vue-router'
-//import Home from '../views/Home.vue'
+
+//***  INICIO DE RUTAS ***//
+
 import Inicio from '../components/Evento/Evento.vue'
 import Login from '../components/Login/login.vue'
 import Perfil from '../components/Admin/Perfil/Perfil.vue'
-//import Administrador from '../components/Admin/Eventos/MainEventos.vue'
-import Participantes from '../components/Admin/Eventos/ParticipantesEvento.vue'
+//------Eventos------
 import CrudEventos from '../components/Admin/Eventos/Eventos.vue'
 import CrearEvento from '../components/Admin/Eventos/CrearEvento.vue'
+import MostrarEvento from '../components/Admin/Eventos/MostrarEvento.vue'
 import Conferencistas from '../components/Admin/Conferencistas/Conferencista.vue'
+import Participantes from '../components/Admin/Eventos/ParticipantesEvento.vue'
+//------Expositores o Conferencistas------
 import CrearEditarConferencista from '../components/Admin/Conferencistas/CrearEditarConferencista.vue'
 import MostrarConferencista from '../components/Admin/Conferencistas/MostrarConferencista.vue'
 //import Pruebas from '../components/Admin/Conferencistas/MostrarConferencista.vue'
@@ -53,6 +57,12 @@ const routes = [
     path: '/admin/eventos',
     name: 'Eventos',
     component: CrudEventos,
+    meta:{protegido:true}
+  },
+  {
+    path: '/eventos/mostrar/:idevento?',
+    name: 'MostrarEvento',
+    component: MostrarEvento,
     meta:{protegido:true}
   },
   {

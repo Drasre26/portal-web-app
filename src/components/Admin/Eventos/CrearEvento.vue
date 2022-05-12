@@ -148,6 +148,7 @@ export default {
           if(idevento){
             try {
               const {data} = await axios.get(`${this.urlApi}/eventos/${idevento}`)
+              data.fecha = dayjs(data.fecha).format('YYYY-MM-DD')
               this.evento = data;
             } catch (error) {
               console.log(error)

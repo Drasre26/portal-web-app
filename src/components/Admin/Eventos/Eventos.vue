@@ -1,55 +1,24 @@
 <template>
   <v-row>
     <MenuAdministrador/>
-    <v-col>
-<v-data-table
-    :headers="headers"
-    :items="itemslist"
-    :search="search"
-    sort-by="nombre"
-    class="elevation-1"
-  >
-    <template v-slot:top >
-      <v-toolbar flat color="white" >
-        <v-toolbar-title>{{title}}</v-toolbar-title>
-        <v-divider
-          class="mx-4"
-          inset
-          vertical
-        ></v-divider>
-        <v-text-field
-        v-model="search"
-        append-icon="mdi-magnify"
-        label="Buscar..."
-        single-line
-        hide-details
-      ></v-text-field>
-        <v-spacer></v-spacer>
-         <v-btn
-              color="primary"
-              dark
-              class="mb-2"
-              to="/admin/eventos/crear"
-            >NUEVO</v-btn>
-
-      
-      </v-toolbar>
-    </template>
-    <template v-slot:[`item.actions`]="{ item }">
-      <v-icon small  class="mr-2"  @click="editItem(item)"  v-if="item.estado == 'Activo'" >
-        mdi-pencil
-      </v-icon>
-      <v-icon small @click="deleteItem(item.idcategoria)" v-if="item.estado == 'Activo'">
-        mdi-delete
-      </v-icon>
-      <v-btn color="red" small v-if="item.estado !== 'Activo'" @click="cambiarestado('Activo',item.idcategoria)" x-small dark>
-        Activar
+    <v-col> 
+      <v-sheet class="ma-3 pa-3" height="85vh">
+        <v-row>
+          <v-col cols="6" v-for="item in eventos" :key="item.idevento">
+            <CardEvento :datoevento="item" @eliminarEvento="deleteItem"></CardEvento>
+          </v-col>
+        </v-row>
+        <v-btn
+        color="green"
+        fab
+        large
+        dark
+        class="v-btn--example"
+        @click="$router.push('/admin/eventos/crear/')"
+      >
+       <v-icon>mdi-plus</v-icon>
       </v-btn>
-    </template>
-    <template v-slot:no-data>
-      <v-btn color="primary" @click="initialize">Recargar</v-btn>
-    </template>
-  </v-data-table>
+      </v-sheet>
     </v-col>
   </v-row>
   
@@ -59,50 +28,21 @@
 import axios from 'axios'
 import Swal from 'sweetalert2'
 import MenuAdministrador from '../../Admin/menu/MenuAdministrador.vue'
+import CardEvento from './CardEvento.vue'
 
 export default {
   components:{
-        MenuAdministrador
+        MenuAdministrador,CardEvento
     },
      data: () => ({
       title:'Eventos',
-      search:'',
-      estado:false,
-      dialog: false,
-      headers: [       
-        { text: 'Titulo', value: 'titulo' },
-        { text: 'Subtitulo', value: 'subtitulo' },
-        { text: 'Fecha',align: 'center', value: 'fecha' },      
-        { text: 'Estado',align: 'center', value: 'estado',sortable: false, },
-        { text: 'Actions',align: 'center', value: 'actions', sortable: false },
-      ],
-      itemslist: [],
-      editedIndex: -1,
-      editedItem: {
-        nombre: '',
-        descripcion: '',
-        condicion: 1,
-      },
-      defaultItem: {
-        nombre: '',
-        descripcion: '',
-        condicion: 1,
-      },
+      eventos: [],
     }),
 
     computed: {
-      formTitle () {
-        return this.editedIndex === -1 ? 'Nuevo Registro' : 'Editar Registro'
-      },
       urlApi(){
            return this.$store.getters.getUrlApi
         },
-    },
-
-    watch: {
-      dialog (val) {
-        val || this.close()
-      },
     },
 
     async created () {
@@ -113,91 +53,55 @@ export default {
       async initialize () {
        try {
          const {data} =  await axios.get(`${this.urlApi}/eventos`)
-           this.itemslist=data
-           console.log(this.itemslist)
+           this.eventos=data
+           console.log(this.eventos)
        } catch (error) {
            console.log(error)
        }      
-      }, 
-      editItem (item) {
-          this.$router.push('/admin/eventos/crear/'+item.idevento)
-        // this.editedIndex = this.getItems.indexOf(item)
-        // this.editedItem = Object.assign({}, item)
-        // this.dialog = true
       },
 
-      deleteItem (idcategoria) {
-        
+      deleteItem (datoevento) {
+        console.log('Si llego el emit==>',datoevento)
         Swal.fire({
           title: 'Esta Seguro?',
-          text: "El registro será desactivado!",
+          text: "El registro será eliminado!",
           icon: 'warning',
           showCancelButton: true,
           confirmButtonColor: '#3085d6',
           cancelButtonColor: '#d33',
-          confirmButtonText: 'Sí, Desactivar!',
+          confirmButtonText: 'Sí, eliminar!',
           cancelButtonText: 'Cancelar!'
         }).then((result) => {
           if (result.isConfirmed) {
             //Procedimiento para eliminarlo
-            this.cambiarestado('Desactivado',idcategoria)
+            datoevento.estado='Eliminado'
+            this.eliminarEvento(datoevento)
           }
         })
         
       },
-      cambiarestado(estado,idcategoria) {
-        axios.put(`${this.$store.state.urlapi}/categorias/${idcategoria}`,{estado:estado},this.getTokenUser)
-          .then(() => {
-            this.alertDone();
-            this.initialize();
-          });
-      },
-      close () {
-        this.dialog = false
-        this.$nextTick(() => {
-          this.editedItem = Object.assign({}, this.defaultItem)
-          this.editedIndex = -1
-        })
-      },
-
-      save () {
-        if (this.editedIndex > -1) {       
-          this.putItem()
-        } else {
-          this.postItem()
+      async eliminarEvento(datoevento) {
+        try {
+          await axios.put(`${this.urlApi}/eventos/${datoevento.idevento}`,datoevento)
+          await this.initialize()
+          Swal.fire('Registro Eliminado','El registro ha sido eliminado','success')
+        } catch (error) {
+          console.log(error)
+          Swal.fire('!Opss Ocurrió un Error','El registro no pudo ser eliminado','error')
         }
-        this.close()
-      },
-      postItem(){
-        axios.post(`${this.$store.state.urlapi}/categorias/`,this.editedItem,this.getTokenUser).then(()=>{                
-          this.alertDone()
-          this.initialize()          
-        })
-      },
-      putItem(){       
-        const formData={
-          nombre:this.editedItem.nombre,
-          descripcion:this.editedItem.descripcion,
-          condicion:this.editedItem.condicion,
-        }      
-       axios.put(`${this.$store.state.urlapi}/categorias/${this.editedItem.idcategoria}`,formData,this.getTokenUser).then(()=>{         
-          this.alertDone()
-          this.initialize()          
-        })
-        
-      },
-
-      //Notificaciones Swal
-      alertDone(){
-        Swal.fire({
-          icon: 'success',
-          title: 'Realizado',
-          showConfirmButton: false,
-          timer: 1500
-        })
       }
     },
 
     
 }
 </script>
+
+
+<style>
+  /* This is for documentation purposes and will not be needed in your application */
+ .v-btn--example {
+    bottom: 0;
+    margin: 0 0 16px 16px;
+    float: right;
+  }
+</style>
