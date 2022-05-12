@@ -29,10 +29,14 @@
             <div v-html="item.minibiografia"></div>
           </v-card-text>
 
-          <v-card-actions>
-            <v-btn color="orange" dark @click="mostrar(item.idexpositor)"> Mostrar </v-btn>
-            <v-btn color="orange" dark @click="navegar(item.idexpositor)"> Editar </v-btn>
-            <v-btn color="red" dark @click="eliminar(item)"> 
+          <v-card-actions class="justify-end">
+            <v-btn outlined rounded text @click="mostrar(item.idexpositor)">
+              <v-icon>mdi-eye-plus</v-icon>
+            </v-btn>
+            <v-btn outlined rounded text @click="navegar(item.idexpositor)">
+              <v-icon>mdi-lead-pencil</v-icon>
+            </v-btn>
+            <v-btn outlined rounded text @click="eliminar(item)"> 
               <v-icon>mdi-delete</v-icon>
             </v-btn>
           </v-card-actions>

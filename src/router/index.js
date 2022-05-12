@@ -11,6 +11,8 @@ import Perfil from '../components/Admin/Perfil/Perfil.vue'
 import CrudEventos from '../components/Admin/Eventos/Eventos.vue'
 import CrearEvento from '../components/Admin/Eventos/CrearEvento.vue'
 import MostrarEvento from '../components/Admin/Eventos/MostrarEvento.vue'
+import OpcionesEvento from '../components/Admin/Eventos/Opciones/OpcionesEvento.vue'
+
 import Conferencistas from '../components/Admin/Conferencistas/Conferencista.vue'
 import Participantes from '../components/Admin/Eventos/ParticipantesEvento.vue'
 //------Expositores o Conferencistas------
@@ -57,6 +59,12 @@ const routes = [
     path: '/admin/eventos',
     name: 'Eventos',
     component: CrudEventos,
+    meta:{protegido:true}
+  },
+  {
+    path: '/admin/evento/opciones',
+    name: 'OpcionesEvento',
+    component: OpcionesEvento,
     meta:{protegido:true}
   },
   {

@@ -27,16 +27,20 @@
           </v-list-item>
 
           <v-card-actions>
+              
             <v-btn outlined rounded text @click="$emit('eliminarEvento', datoevento)">
                 <v-icon>mdi-trash-can</v-icon>
             </v-btn>
+
             <v-btn outlined rounded text @click="$router.push('/admin/eventos/crear/'+datoevento.idevento)">
                 <v-icon>mdi-lead-pencil</v-icon>
             </v-btn>
+
             <v-btn outlined rounded text @click="$router.push('/eventos/mostrar/'+datoevento.idevento)">
                 <v-icon>mdi-eye-plus</v-icon>
             </v-btn>
-            <v-btn outlined rounded text>
+
+            <v-btn outlined rounded text @click="$router.push('/admin/evento/opciones')">
                 <v-icon>mdi-cog</v-icon>
             </v-btn>
           </v-card-actions>
