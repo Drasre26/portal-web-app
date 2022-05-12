@@ -71,7 +71,7 @@
         </v-list-item>
 
 
-        <v-list-item>
+        <v-list-item to="/admin/conferencistas">
           <v-list-item-icon>
             <v-icon >mdi-menu-right</v-icon>
           </v-list-item-icon>

@@ -1,15 +1,19 @@
 import Vue from 'vue'
 import vuex from '../store/index'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
+//import Home from '../views/Home.vue'
+import Inicio from '../components/Evento/Evento.vue'
 import Login from '../components/Login/login.vue'
 import Perfil from '../components/Admin/Perfil/Perfil.vue'
 //import Administrador from '../components/Admin/Eventos/MainEventos.vue'
 import Participantes from '../components/Admin/Eventos/ParticipantesEvento.vue'
 import CrudEventos from '../components/Admin/Eventos/Eventos.vue'
 import CrearEvento from '../components/Admin/Eventos/CrearEvento.vue'
+import Conferencistas from '../components/Admin/Conferencistas/Conferencista.vue'
+import CrearEditarConferencista from '../components/Admin/Conferencistas/CrearEditarConferencista.vue'
+import MostrarConferencista from '../components/Admin/Conferencistas/MostrarConferencista.vue'
+//import Pruebas from '../components/Admin/Conferencistas/MostrarConferencista.vue'
 
-import Pruebas from '../components/Evento/Evento.vue'
 
 
 Vue.use(VueRouter)
@@ -17,16 +21,16 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    name: 'Home',
-    component: Home,
+    name: 'Inicio',
+    component: Inicio,
     meta:{protegido:false}
   },
-  {
-    path: '/pruebas/:idevento?',
-    name: 'Pruebas',
-    component: Pruebas,
-    meta:{protegido:false}
-  },
+  // {
+  //   path: '/pruebas/:id?',
+  //   name: 'Pruebas',
+  //   component: Pruebas,
+  //   meta:{protegido:false}
+  // },
   {
     path: '/login',
     name: 'Login',
@@ -57,6 +61,24 @@ const routes = [
     
     component: CrearEvento,
     meta:{protegido:true}
+  },
+  {
+    path: '/admin/conferencistas',
+    name: 'Conferencistas',
+    component: Conferencistas,
+    meta:{protegido:true}
+  },
+  {
+    path: '/admin/conferencistas/mostrar/:id?',
+    name: 'MostrarConferencista',
+    component: MostrarConferencista,
+    meta:{protegido:true}
+  },
+  {
+    path: '/admin/conferencistas/nuevo/:idexpositor?',
+    name: 'CrearEditarConferencista',
+    component: CrearEditarConferencista,
+    meta:{protegido:true}
   }
 ]
 
@@ -77,7 +99,7 @@ router.beforeEach((to, from, next) => {
     if(usuario.rol==="Participante"){
       next({ name: 'Perfil' })
     }else{
-      next({ name: 'Administrador' })
+      next({ name: 'Participantes' })
     }
   
   }
