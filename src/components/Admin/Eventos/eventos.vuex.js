@@ -1,20 +1,20 @@
 export default {
     state:{
-        idevento:0
+        evento:0
     },
     mutations:{
-        setIdevento({state},idevento){
-            state.idevento=idevento
+        setEvento(state,data){
+            state.evento=data
         }
     },
     actions:{
-        setIdevento({commit},idevento){
-            commit('setIdevento',idevento)
+        setEvento({commit},data){
+            commit('setEvento',data)
         }
     },
     getters:{
-        getIdEvento({state}){
-            return state.idevento;
+        getEvento(state){
+            return state.evento;
         }
     }
 }

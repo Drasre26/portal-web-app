@@ -153,7 +153,7 @@ export default {
                 if(rolusuario==="Participante"){
                   this.$router.push('/admin/perfil')
                 }else{
-                  this.$router.push('/admin/participantes')
+                  this.$router.push('/admin/eventos')
                 }
              
            

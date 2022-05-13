@@ -40,7 +40,11 @@
                 <v-icon>mdi-eye-plus</v-icon>
             </v-btn>
 
-            <v-btn outlined rounded text @click="$router.push('/admin/evento/opciones')">
+            <v-btn outlined rounded text @click="participantesEvento(datoevento)">
+                <v-icon>mdi-account-group</v-icon>
+            </v-btn>
+
+            <v-btn outlined rounded text @click="setEvento(datoevento)">
                 <v-icon>mdi-cog</v-icon>
             </v-btn>
           </v-card-actions>
@@ -54,6 +58,16 @@ export default {
     urlApi() {
       return this.$store.getters.getUrlApi;
     }
+  },
+  methods:{
+      setEvento(item){
+          this.$store.dispatch("setEvento",item)
+          this.$router.push('/admin/evento/opciones')
+      },
+      participantesEvento(item){
+          this.$store.dispatch("setEvento",item)
+          this.$router.push('/admin/participantes')
+      }
   }
 };
 </script>

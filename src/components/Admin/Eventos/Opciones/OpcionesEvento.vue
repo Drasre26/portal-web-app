@@ -18,9 +18,6 @@
               <v-col>
                   <AgregarParticipante></AgregarParticipante>
               </v-col>
-              <v-col>
-
-              </v-col>
           </v-row>  
       </v-sheet>
     </v-col>

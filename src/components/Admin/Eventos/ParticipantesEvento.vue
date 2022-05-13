@@ -86,11 +86,14 @@ export default {
         urlApi(){
            return this.$store.getters.getUrlApi
         },
+        getEvento() {
+          return this.$store.getters.getEvento;
+        },
     },
     methods:{
       async main(){      
         try {
-            const {data} = await axios.get(`${this.urlApi}/eventos/participantes/1`)
+            const {data} = await axios.get(`${this.urlApi}/eventos/participantes/${this.getEvento.idevento}`)
             console.log(data)
             this.participantes = data
         } catch (error) {

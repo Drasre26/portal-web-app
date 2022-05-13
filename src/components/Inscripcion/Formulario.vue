@@ -5,7 +5,7 @@
       <h2>{{tituloformulario}}</h2>
       <hr />
       <br />
-
+        <h3>{{getEvento.idevento}}</h3>
       <v-row v-if="getUsuario">
         <v-col cols="12">
          <v-file-input
@@ -159,7 +159,10 @@ export default {
         },
         getUsuario(){
           return this.$store.getters.usuarioAuth.usuario
-        }
+        },
+        getEvento() {
+          return this.$store.getters.getEvento;
+        },
     },
     methods:{
       main(){
@@ -202,7 +205,7 @@ export default {
       async suscripcionUsuario(item){
         
         const id = parseInt(item.idusuario)
-        const suscripcion = { idusuario:id , idevento: 1 }
+        const suscripcion = { idusuario:id , idevento: this.getEvento.idevento }
 
         this.mensajeEmail.to = item.email
         try {

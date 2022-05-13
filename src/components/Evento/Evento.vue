@@ -101,8 +101,8 @@ export default {
             try {
                 const {data} = await axios.get(`${this.urlApi}/eventos`)
                 data[0].fecha = dayjs(data[0].fecha).format('YYYY-MM-DD')
-                //console.log(data[0])
                 this.evento = data[0]
+                this.$store.dispatch("setEvento",this.evento)
             } catch (error) {
                 //eventos:null
                 console.log(error)
@@ -112,7 +112,10 @@ export default {
           
           try {
             const {data} =  await axios.get(`${this.urlApi}/eventos/${idevento}`)
-              this.evento=data
+            data.fecha = dayjs(data.fecha).format('YYYY-MM-DD')
+            this.evento=data
+            this.$store.dispatch("setEvento",this.evento)
+
           } catch (error) {
               console.log(error)
           }   
