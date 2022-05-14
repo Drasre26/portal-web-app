@@ -151,7 +151,7 @@ export default {
                 this.spinner=false
                 this.$store.dispatch("postAutenticacion",res.data)
                 if(rolusuario==="Participante"){
-                  this.$router.push('/admin/perfil')
+                  this.$router.push('/admin/usuario')
                 }else{
                   this.$router.push('/admin/eventos')
                 }

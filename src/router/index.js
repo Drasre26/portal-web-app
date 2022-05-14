@@ -6,7 +6,10 @@ import VueRouter from 'vue-router'
 
 import Inicio from '../components/Evento/Evento.vue'
 import Login from '../components/Login/login.vue'
-import Perfil from '../components/Admin/Perfil/Perfil.vue'
+//import Perfil from '../components/Admin/Perfil/Perfil.vue'
+//------Usuario -----
+import Usuario from '../components/Usuarios/Usuario.vue'
+
 //------Eventos------
 import CrudEventos from '../components/Admin/Eventos/Eventos.vue'
 import CrearEvento from '../components/Admin/Eventos/CrearEvento.vue'
@@ -14,7 +17,7 @@ import MostrarEventoPorId from '../components/Evento/Evento.vue'
 
 //import MostrarEvento from '../components/Admin/Eventos/MostrarEvento.vue'
 import OpcionesEvento from '../components/Admin/Eventos/Opciones/OpcionesEvento.vue'
-import ParticipantesEvento from '../components/Admin/Eventos/ParticipantesEvento.vue'
+import ParticipantesEvento from '../components/Admin/Eventos/Opciones/ParticipantesEventos.vue'
 
 import Conferencistas from '../components/Admin/Conferencistas/Conferencista.vue'
 //------Expositores o Conferencistas------
@@ -46,9 +49,9 @@ const routes = [
     meta:{protegido:false}
   },
   {
-    path: '/admin/perfil',
-    name: 'Perfil',
-    component: Perfil,
+    path: '/admin/usuario',
+    name: 'Usuario',
+    component: Usuario,
     meta:{protegido:true}
   },
   {
@@ -117,7 +120,7 @@ router.beforeEach((to, from, next) => {
   if (to.name == 'Login' && usuarioAutenticado){ 
     
     if(usuario.rol==="Participante"){
-      next({ name: 'Perfil' })
+      next({ name: 'Usuario' })
     }else{
       next({ name: 'Participantes' })
     }

@@ -220,7 +220,7 @@ export default {
       async actualizarUsuario(){
         try {
          const {data} =  await axios.put(`${this.urlApi}/usuarios/${this.usuario.idusuario}`,this.usuario)
-          this.$store.dispatch("postAutenticacion",data)
+          this.$store.dispatch("updateUsusario",data)
           this.main()
           this.notificationSwal('success','Usuario Actualizado','El usuario se actualizo correctamente')
           this.usuario = Object.assign({}, data)

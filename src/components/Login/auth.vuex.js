@@ -2,7 +2,6 @@
 export default {
     state:{
         usuario:false,
-        usuariopermisos:[],
         accessToken:'',
         autenticado:false
     },
@@ -10,12 +9,14 @@ export default {
         setAutenticacion(state,data){
             state.autenticado=true;
             state.usuario = data.usuario
-            state.usuariopermisos = data.usuario.usuariopermiso
             state.accessToken = data.accessToken
         },
         updateAuth(state,estado){
             state.autenticado = estado
             state.usuario = false
+        },
+        updateUsusario(state,data){
+            state.usuario = data
         }
     },
     actions:{
@@ -24,6 +25,9 @@ export default {
         },
         updateAuth({commit},estado){
             commit('updateAuth',estado)
+        },
+        updateUsusario({commit},data){
+            commit('updateUsusario',data)
         }
     },
     getters:{

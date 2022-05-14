@@ -5,7 +5,7 @@
         <br /><br /><br />
         <!--Just the logo.. Don't mind this-->
         <Banner :evento="evento" ></Banner>
-      
+
 
       <!--Waves Container-->
       <div>

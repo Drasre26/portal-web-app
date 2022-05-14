@@ -82,7 +82,7 @@ export default {
         async crearNuevo (){
             
             try {
-                await axios.post(`${this.urlApi}/expositores`,this.item)
+                await axios.post(`${this.urlApi}/expositores`,this.expositor)
                 Swal.fire('Registro Creado','La creación del registro fue exitosa','success')
             } catch (error) {
                 console.log(error)
