@@ -45,7 +45,7 @@
       <hr>
       <v-card-subtitle class="pb-0"  v-if="item.estado !=='Confirmado'">
         Tiene un periodo de 5 dias despues de su inscripción para subir su
-        Boleta de pago
+        Boleta de pago, el numero de boleta inicia con BN-
       </v-card-subtitle>
 
       <v-img  width="100%" :src="urlApi+'/imagenes/'+item.boleta" contain aspect-ratio="2" v-if="item.estado =='Confirmado'" class="mb-3">
@@ -57,9 +57,18 @@
       >
       <v-icon>mdi-trash-can</v-icon> Eliminar Boleta
       </v-btn>
-
-      <v-file-input
+      <v-text-field 
       v-if="item.estado !=='Confirmado'"
+       v-model="numeroboleta" 
+       label="Ingrese Número de Boleta" 
+       placeholder="BN-1234568"
+       class="mx-6 mt-3"
+       outlined
+       @change="validarBoleta"
+       >
+       </v-text-field>
+      <v-file-input
+        v-if="item.estado !=='Confirmado' && boletavalida"
         class="mx-6"
         type="file"
         outlined
@@ -82,6 +91,8 @@ import dayjs from 'dayjs';
 
 export default {
   data: () => ({
+    numeroboleta:'',
+    boletavalida:false,
     boleta:[],
     imagen:[],
     suscripciones: [],
@@ -142,7 +153,6 @@ export default {
     },
     async subirImagen(item) {
       
-    
       const formData = new FormData();
       formData.append("file", this.boleta);
 
@@ -165,6 +175,17 @@ export default {
 
           this.mensajeEmail.to = usuario.email
           await axios.post(`${this.urlApi}/usuarios/enviarcorreo`,this.mensajeEmail)
+    },
+    async validarBoleta(){
+
+        try {
+          await axios.get(`${this.urlApi}/suscripciones/validarboleta/${this.numeroboleta}`)
+          this.boletavalida = false
+          Swal.fire('Boleta Inválida','La boleta es invalida o ya fue registrada','error')
+        } catch (error) {
+          this.boletavalida = true;
+          console.log(error)
+        }
     },
     async eliminarBoleta(item){
       item.boleta = 'default.png'

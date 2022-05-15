@@ -2,7 +2,7 @@
   <v-row>
     <MenuAdministrador/>
     <v-col> 
-      <v-sheet class="ma-3 pa-3" height="85vh">
+      <v-sheet class="ma-3 pa-3">
         <v-row>
           <v-col cols="6" v-for="item in eventos" :key="item.idevento">
             <CardEvento :datoevento="item" @eliminarEvento="deleteItem"></CardEvento>
