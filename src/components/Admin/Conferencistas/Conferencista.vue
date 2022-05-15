@@ -14,11 +14,9 @@
           </v-row>
     
         <v-divider class="mb-2 mt-2"></v-divider>
-
-        <v-card class="mx-auto" max-width="300" 
-            v-for="item in conferencistas"
-            :key="item.idexpositor"
-        >
+      <v-row>
+        <v-col cols="3" v-for="item in conferencistas" :key="item.idexpositor">
+<v-card class="mx-auto" max-width="100%" >
           <v-img
           class="white--text align-end"
           :src="`${urlApi}/imagenes/${item.fotografia}`"
@@ -41,6 +39,8 @@
             </v-btn>
           </v-card-actions>
         </v-card>
+        </v-col>
+      </v-row>
 
         <h2 v-if="conferencistas.length<1">No hay registros </h2>
 
