@@ -136,18 +136,6 @@ export default {
       from: "+19853284441",
       to: "+502"
     },
-    mensajeEmail:{
-      from: '"Inscripción Realizada 👻" <draslyrafael@cunsurori.edu.gt>', // sender address
-      to: "pedroumg2015@gmail.com", // list of receivers
-      subject: "Inscripcion Congreso Tecnologico ✔", // Subject line
-      text: "FELICIDADES ESTA INSCRITO AL CONGRESO TECNOLOGICO UMG 2022", // plain text body
-      html: `
-      <h3>Tiene 5 dias para realizar el pago de su inscripcion
-      Puede realizar los pagos a la cuenta
-      BANRURAL: Cuenta Monetaria No. 5689756 a nombre de CONGRESOS UMG
-      </h3>
-      `, // html body
-    }
     }),
     created(){
       this.main()

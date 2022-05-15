@@ -3,8 +3,22 @@
   
     <v-container fluid>
       <h2>{{tituloformulario}}</h2>
+      
+      <div v-if="procesando">
+        <br>
+        <h2>Realizado operación</h2>
+            <v-progress-linear
+              indeterminate
+              color="cyan"
+            ></v-progress-linear>
+        <br>
+      </div>
       <hr />
       <br />
+     
+      <div id="formulario" v-if="!procesando">
+
+      
       <v-row v-if="getUsuario">
         <v-col cols="12">
          <v-file-input
@@ -101,16 +115,19 @@
           <v-btn color="red" v-else dark @click="crearUsuario">Inscribrirme</v-btn>
           
         </v-col>
+        
       </v-row>
+      </div>
     </v-container>
   </v-card>
 </template>
 <script>
 import axios from 'axios'
 import Swal from 'sweetalert2'
-
+import MensajeEmail from '@/utils/emailSuscripcion.js'
 export default {
   data: () => ({
+    procesando:false,
     imagen:[],
     tituloformulario:'Inscripcion',
     usuario:{
@@ -136,18 +153,6 @@ export default {
       from: "+19853284441",
       to: "+502"
     },
-    mensajeEmail:{
-      from: '"Inscripción Realizada 👻" <draslyrafael@cunsurori.edu.gt>', // sender address
-      to: "pedroumg2015@gmail.com", // list of receivers
-      subject: "Inscripcion Congreso Tecnologico ✔", // Subject line
-      text: "FELICIDADES ESTA INSCRITO AL CONGRESO TECNOLOGICO UMG 2022", // plain text body
-      html: `
-      <h3>Tiene 5 dias para realizar el pago de su inscripcion
-      Puede realizar los pagos a la cuenta
-      BANRURAL: Cuenta Monetaria No. 5689756 a nombre de CONGRESOS UMG
-      </h3>
-      `, // html body
-    }
     }),
     created(){
       this.main()
@@ -181,8 +186,9 @@ export default {
         }
       },
       async crearUsuario(){
+        this.procesando = true;
         try {
-
+          
           //Creamos el usuario
           const {data} = await axios.post(`${this.urlApi}/usuarios`,this.usuario)
           //Suscribimos el usuario al Evento
@@ -197,23 +203,30 @@ export default {
           this.notificationSwal('success','Ha sido registrado exitosamente','Revise su correo electronico para activar inscripcion')
           //---------this.usuario = Object.assign({}, this.default)
         } catch (error) {
+          this.procesando = false;
           this.notificationSwal('error','Error en su registro','Intentelo mas tarde')
           console.log(error)
         }
       },
       async suscripcionUsuario(item){
         
-        const id = parseInt(item.idusuario)
-        const suscripcion = { idusuario:id , idevento: this.getEvento.idevento }
+       
+        const suscripcion = { 
+              idusuario:parseInt(item.idusuario) , 
+              idevento: this.getEvento.idevento 
+              }
 
-        this.mensajeEmail.to = item.email
+       
         try {
-          console.log(this.mensajeEmail)
+          
          
-         const {data} = await axios.post(`${this.urlApi}/suscripciones`,suscripcion)
-         await axios.post(`${this.urlApi}/usuarios/enviarcorreo`,this.mensajeEmail)
-        console.log(data)
+         await axios.post(`${this.urlApi}/suscripciones`,suscripcion)
+         
+         const mensajeEmail =  MensajeEmail(item,this.getEvento)
+          await axios.post(`${this.urlApi}/usuarios/enviarcorreo`,mensajeEmail)
+         this.procesando = false;
         } catch (error) {
+          this.procesando = false;
           console.log(error)
         }
       },

@@ -7,6 +7,7 @@
       v-for="item in suscripciones"
       :key="item.idsuscripcion"
     >
+
       <v-list-item three-line>
         <v-list-item-content>
           <div class="text-overline mb-4">
@@ -26,7 +27,7 @@
       </v-list-item>
 
       <v-card-actions>
-        <v-btn outlined rounded color="red" @click="actualizarUsuario(item)" v-if="item.estado!=='Confirmado'">
+        <v-btn outlined rounded color="red" @click="eliminarSuscripcion(item)" v-if="item.estado!=='Confirmado'">
           Cancelar Inscripcion
         </v-btn>
         <v-btn outlined rounded color="teal" v-if="item.estado=='Confirmado'" @click="impresionGafete(item)">
@@ -88,6 +89,7 @@
 import axios from "axios";
 import Swal from "sweetalert2";
 import dayjs from 'dayjs';
+import MensajeEmail from '@/utils/emailBoletaPagada.js'
 
 export default {
   data: () => ({
@@ -106,18 +108,6 @@ export default {
       idusuario: 1,
       idevento: 1,
       estado: "Inscrito",
-    },
-    mensajeEmail:{
-      from: '"Registro Boleta" <draslyrafael@cunsurori.edu.gt>', // sender address
-      to: "pedroumg2015@gmail.com", // list of receivers
-      subject: "Registro Boleta para Inscripcion Congreso Tecnologico ✔", // Subject line
-      text: "SU BOLETA HA SIDO REGISTRADA ", // plain text body
-      html: `
-      <h3>
-      Su Boleta de pago ha sido registrada exitosamente ya puede imprimir su gafete y una vez terminao 
-      el evento podrá imprimir su diploma
-      </h3>
-      `, // html body
     },
     mensajeSMS:{
       body: "SU BOLETA HA SIDO REGISTRADA",
@@ -164,17 +154,29 @@ export default {
       item.estado = 'Confirmado';
 
       await axios.put(`${this.urlApi}/suscripciones/${item.idsuscripcion}`, item);
-      await this.notificaciones()
+      await this.notificaciones(item)
       await this.main()
     },
-    async notificaciones(){
+    async eliminarSuscripcion(item){
+      try {
+        await axios.delete(
+          `${this.urlApi}/suscripciones/${item.idsuscripcion}`
+        );
+        this.main();
+        this.notificationSwal("success", "Registro Eliminado", "");
+      } catch (error) {
+        console.log(error);
+        this.notificationSwal("error", "Error al Eliminar el registro", "");
+      }
+    },
+    async notificaciones(evento){
           const { usuario } = this.$store.getters.usuarioAuth;
           //Enviamos mensaje al telefono del usuario 
           this.mensajeSMS.to = this.mensajeSMS.to+usuario.telefono
           await axios.post(`${this.urlApi}/usuarios/mensaje`,this.mensajeSMS)
 
-          this.mensajeEmail.to = usuario.email
-          await axios.post(`${this.urlApi}/usuarios/enviarcorreo`,this.mensajeEmail)
+          const mensajeEmail =  MensajeEmail(usuario,evento)
+          await axios.post(`${this.urlApi}/usuarios/enviarcorreo`,mensajeEmail)
     },
     async validarBoleta(){
 
