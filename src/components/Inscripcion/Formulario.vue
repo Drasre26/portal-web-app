@@ -1,6 +1,6 @@
 <template>
   <v-card class="ma-1 pa-3"  elevation="2" max-width="100%" rounded="false">
-  
+    
     <v-container fluid>
       <h2>{{tituloformulario}}</h2>
       

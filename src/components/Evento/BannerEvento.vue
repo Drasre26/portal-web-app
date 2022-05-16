@@ -10,7 +10,7 @@
             <v-alert color="cyan" border="left" elevation="2" colored-border>
               <h2>El evento <strong>iniciará</strong> en:</h2>
               <flip-countdown :deadline="evento.fecha"></flip-countdown>
-            
+
             </v-alert>
           </v-col>
         </v-row>
@@ -21,14 +21,17 @@
           aspect-ratio="1.7"
           class="rounded-lg"
         ></v-img>
+        <v-btn color="red" x-large dark class="ma-4" v-if="getUsuario" @click="sucripcionEvento">Suscribirme al EVENTO</v-btn>
       </v-col>
     </v-row>
   </div>
 </template>
 <script>
 import FlipCountdown from "vue2-flip-countdown";
+import MensajeEmail from '@/utils/emailSuscripcion.js'
+import Swal from 'sweetalert2'
+import axios from 'axios';
 
-//src="https://picsum.photos/510/300?random"
 export default {
   props: ['evento'],
   components: { FlipCountdown },
@@ -36,6 +39,41 @@ export default {
       urlApi(){
             return this.$store.getters.getUrlApi
         },
+      getUsuario(){
+          return this.$store.getters.usuarioAuth.usuario
+        },  
+  },
+  methods:{
+    async sucripcionEvento(){
+     const suscripcion = {
+        idevento:this.evento.idevento,
+        idusuario: parseInt(this.getUsuario.idusuario)
+      }
+
+      try {
+        await axios.post(`${this.urlApi}/suscripciones`,suscripcion)
+        this.notificacionUsuario()
+      } catch (error) {
+        console.log(error)
+        Swal.fire('Error al Suscribirse al evento','','error')
+      }
+    },
+    async notificacionUsuario(){
+      const mensajeEmail =  MensajeEmail(this.getUsuario,this.evento)
+      const mensajeSMS={
+        body: `Se ha suscrito al evento ${this.evento.titulo}`,
+        from: "+19853284441",
+        to: `+502${this.getUsuario.telefono}`
+      }
+      try {
+        await axios.post(`${this.urlApi}/usuarios/mensaje`,mensajeSMS)
+        await axios.post(`${this.urlApi}/usuarios/enviarcorreo`,mensajeEmail)
+        Swal.fire('Suscripción Realizada','','success')
+      } catch (error) {
+        console.log(error)
+        Swal.fire('Error al Suscribirse al evento','','error')
+      }
+    }
   }
 };
 </script>

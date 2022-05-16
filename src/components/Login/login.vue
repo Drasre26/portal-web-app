@@ -39,15 +39,12 @@
                   </v-col>
                   <v-col cols="12" md="4" class="indigo darken-1">
                     <v-card-text class="white--text mt-12">
-                      <h1 class="text-center display-1">Hello, Friend!</h1>
+                      <h1 class="text-center display-1">Inicio de Sesion!</h1>
                       <h5 class="text-center">
                         Ingrese sus datos personales y mantengase informado con las mejores noticias
                       </h5>
                     </v-card-text>
                     <div class="text-center">
-                      <v-btn rounded outlined dark @click="step++"
-                        >Crear Cuenta</v-btn
-                      >
                     </div>
                   </v-col>
                 </v-row>
