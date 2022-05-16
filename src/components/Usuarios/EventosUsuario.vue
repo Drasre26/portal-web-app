@@ -223,10 +223,10 @@ export default {
       try {
         //Enviamos por el metodo post los participantes seleccionados para imprimir su gafete
         console.log(usuario)
-        await axios.post(  `http://localhost/pdf/gafete.php`, [usuario]);
+        await axios.post(  `https://eventosumg.microsystems.com.gt/pdf/gafete.php`, [usuario]);
 
         //Una vez generado el pdf con todos los gafetes lo abrimos
-        window.open("http://localhost/pdf/archivos/gafete.pdf", "blank");
+        window.open("https://eventosumg.microsystems.com.gt/pdf/archivos/gafete.pdf", "blank");
       } catch (error) {
         console.log(error);
       }
@@ -235,10 +235,10 @@ export default {
       /* ---------------------- IMPRESION DE GAFETES ----------------------  */
       try {
         //Enviamos por el metodo post los participantes seleccionados para imprimir su gafete
-        await axios.post(  `http://localhost/pdf/diploma.php`,item);
+        await axios.post(  `https://eventosumg.microsystems.com.gt/pdf/diploma.php`,item);
 
         //Una vez generado el pdf con todos los gafetes lo abrimos
-        window.open("http://localhost/pdf/archivos/diplomas.pdf", "blank");
+        window.open("https://eventosumg.microsystems.com.gt/pdf/archivos/diplomas.pdf", "blank");
       } catch (error) {
         console.log(error);
       }

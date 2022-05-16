@@ -14,6 +14,7 @@ import Usuario from '../components/Usuarios/Usuario.vue'
 import CrudEventos from '../components/Admin/Eventos/Eventos.vue'
 import CrearEvento from '../components/Admin/Eventos/CrearEvento.vue'
 import MostrarEventoPorId from '../components/Evento/Evento.vue'
+import ListadoEventos from '../components/Evento/ListarEventos.vue'
 
 //import MostrarEvento from '../components/Admin/Eventos/MostrarEvento.vue'
 import OpcionesEvento from '../components/Admin/Eventos/Opciones/OpcionesEvento.vue'
@@ -25,6 +26,7 @@ import CrearEditarConferencista from '../components/Admin/Conferencistas/CrearEd
 import MostrarConferencista from '../components/Admin/Conferencistas/MostrarConferencista.vue'
 //import Pruebas from '../components/Admin/Conferencistas/MostrarConferencista.vue'
 
+//
 
 
 Vue.use(VueRouter)
@@ -71,6 +73,12 @@ const routes = [
     name: 'OpcionesEvento',
     component: OpcionesEvento,
     meta:{protegido:true}
+  },
+  {
+    path: '/eventos',
+    name: 'ListadoEventos',
+    component: ListadoEventos,
+    meta:{protegido:false}
   },
   {
     path: '/eventos/mostrar/:idevento?',

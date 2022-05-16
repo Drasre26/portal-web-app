@@ -3,8 +3,22 @@
   
     <v-container fluid>
       <h2>{{tituloformulario}}</h2>
+      
+      <div v-if="procesando">
+        <br>
+        <h2>Realizado operación</h2>
+            <v-progress-linear
+              indeterminate
+              color="cyan"
+            ></v-progress-linear>
+        <br>
+      </div>
       <hr />
       <br />
+     
+      <div id="formulario" v-if="!procesando">
+
+      
       <v-row v-if="getUsuario">
         <v-col cols="12">
          <v-file-input
@@ -101,16 +115,19 @@
           <v-btn color="red" v-else dark @click="crearUsuario">Inscribrirme</v-btn>
           
         </v-col>
+        
       </v-row>
+      </div>
     </v-container>
   </v-card>
 </template>
 <script>
 import axios from 'axios'
 import Swal from 'sweetalert2'
-
+import MensajeEmail from '@/utils/emailPersonalizado.js'
 export default {
   data: () => ({
+    procesando:false,
     imagen:[],
     tituloformulario:'Inscripcion',
     usuario:{
@@ -132,7 +149,7 @@ export default {
       password: "",
     },
     mensajeSMS:{
-      body: "FELICIDADES ESTA INSCRITO AL CONGRESO TECNOLOGICO UMG 2022",
+      body: "Mensaje",
       from: "+19853284441",
       to: "+502"
     },
@@ -147,9 +164,6 @@ export default {
         getUsuario(){
           return this.$store.getters.usuarioAuth.usuario
         },
-        getEvento() {
-          return this.$store.getters.getEvento;
-        },
     },
     methods:{
       main(){
@@ -160,60 +174,16 @@ export default {
           this.usuario = usuario
         }
       },
-      async guardar(){
-        const {usuario} = this.$store.getters.usuarioAuth
-        if(usuario){
-          this.actualizarUsuario()
-        }else{
-          this.crearUsuario()
-        }
-      },
-      async crearUsuario(){
-        try {
-
-          //Creamos el usuario
-          const {data} = await axios.post(`${this.urlApi}/usuarios`,this.usuario)
-          //Suscribimos el usuario al Evento
-          await this.suscripcionUsuario(data)
-
-          //Enviamos mensaje al telefono del usuario 
-          this.mensajeSMS.to = this.mensajeSMS.to+this.usuario.telefono
-          await axios.post(`${this.urlApi}/usuarios/mensaje`,this.mensajeSMS)
-
-
-          //Mostramos notificacion de operacion exitosa
-          this.notificationSwal('success','Ha sido registrado exitosamente','Revise su correo electronico para activar inscripcion')
-          //---------this.usuario = Object.assign({}, this.default)
-        } catch (error) {
-          this.notificationSwal('error','Error en su registro','Intentelo mas tarde')
-          console.log(error)
-        }
-      },
-      async suscripcionUsuario(item){
-        
-        const id = parseInt(item.idusuario)
-        const suscripcion = { idusuario:id , idevento: this.getEvento.idevento }
-
-        this.mensajeEmail.to = item.email
-        try {
-          console.log(this.mensajeEmail)
-         
-         const {data} = await axios.post(`${this.urlApi}/suscripciones`,suscripcion)
-         await axios.post(`${this.urlApi}/usuarios/enviarcorreo`,this.mensajeEmail)
-        console.log(data)
-        } catch (error) {
-          console.log(error)
-        }
-      },
       async actualizarUsuario(){
         try {
          const {data} =  await axios.put(`${this.urlApi}/usuarios/${this.usuario.idusuario}`,this.usuario)
           this.$store.dispatch("updateUsusario",data)
-          this.main()
-          this.notificationSwal('success','Usuario Actualizado','El usuario se actualizo correctamente')
           this.usuario = Object.assign({}, data)
+          this.main()
+          this.notificaciones()
+          Swal.fire('Usuario Actualizado','El usuario se actualizo correctamente','success')
         } catch (error) {
-          this.notificationSwal('error','Error en su registro','Intentelo mas tarde')
+          Swal.fire('Error al actualizar','','error')
           console.log(error)
         }
       },
@@ -223,29 +193,37 @@ export default {
         formData.append("file", this.imagen);
       
         try {
-          console.log('Entro aqui !')
           const {data} = await axios.post(`${this.urlApi}/imagenes/upload`, formData);
-          
-          //this.imagen = URL.createObjectURL(this.boleta)
           this.usuario.foto = data.filename
-          //this.imagen = data.filename
-
-         //await this.actualizarUsuario()
         } catch (error) {
             this.imagen = ""
             console.log(error)
-            this.alertError()
+            Swal.fire('Error al subir imagen','','error')
         }
       
       },
-      //Notificacion Swal
-      notificationSwal(icon,title,text){
-            Swal.fire({
-            icon: icon,
-            title: title,
-            text: text,
-            })
-        }
+      async notificaciones(){
+        this.mensajeSMS.body = "Su perfil ha sido actualizado"
+        this.mensajeSMS.to = this.mensajeSMS.to+this.usuario.telefono
+
+            const contenido={
+                titulo:'Su perfil ha sido actualizado',
+                texto:'La información de su perfil se ha actualizado exitosamente.'
+            }
+
+            try {
+               //Enviamos mensaje al telefono del usuario 
+               
+               await axios.post(`${this.urlApi}/usuarios/mensaje`,this.mensajeSMS)
+
+                //Enviamos Correo al usuario 
+                const mensajeEmail =  MensajeEmail(this.usuario,contenido)
+                await axios.post(`${this.urlApi}/usuarios/enviarcorreo`,mensajeEmail)
+              
+            } catch (error) {
+                console.log(error)
+            }
+      }
     }
 }
 </script>

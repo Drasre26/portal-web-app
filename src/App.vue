@@ -19,10 +19,10 @@
       </div>
       <v-btn
         class="ml-5"
-        to="/pruebas"
+        to="/eventos"
         text
       >
-      borrar
+      Eventos
       </v-btn>
       <v-spacer></v-spacer>
 
