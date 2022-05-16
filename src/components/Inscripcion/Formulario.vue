@@ -149,7 +149,7 @@ export default {
       password: "",
     },
     mensajeSMS:{
-      body: "FELICIDADES ESTA INSCRITO AL CONGRESO TECNOLOGICO UMG 2022",
+      body: "",
       from: "+19853284441",
       to: "+502"
     },
@@ -195,6 +195,7 @@ export default {
           await this.suscripcionUsuario(data)
 
           //Enviamos mensaje al telefono del usuario 
+          this.mensajeSMS.body = `Se realizó la suscripcion al evento ${this.getEvento.titulo}`
           this.mensajeSMS.to = this.mensajeSMS.to+this.usuario.telefono
           await axios.post(`${this.urlApi}/usuarios/mensaje`,this.mensajeSMS)
 

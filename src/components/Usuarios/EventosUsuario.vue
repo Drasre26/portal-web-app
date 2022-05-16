@@ -151,6 +151,7 @@ export default {
         ? (this.imagen = URL.createObjectURL(this.boleta))
         : (this.imagen = "");
       item.boleta = res.data.filename;
+      item.numeroboleta = this.numeroboleta
       item.estado = 'Confirmado';
 
       await axios.put(`${this.urlApi}/suscripciones/${item.idsuscripcion}`, item);

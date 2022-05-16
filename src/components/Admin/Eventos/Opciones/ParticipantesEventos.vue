@@ -33,7 +33,7 @@
             </v-toolbar>
           </template>
           <template v-slot:[`item.opciones`]="{ item }">
-            <v-icon color="green" class="mr-2" @click="verBoleta(item)">
+            <v-icon color="green" class="mr-2" @click="verBoleta(item)" :disabled="item.boleta=='default.png'">
               mdi-account-cash
             </v-icon>
             <v-icon color="red" @click="eliminar(item)"> mdi-delete </v-icon>
@@ -60,7 +60,7 @@
           >
           </v-text-field>
 
-          <v-img  width="100%" :src="urlApi+'/imagenes/'+suscripcion.boleta" contain aspect-ratio="2">
+          <v-img  width="100%" :src="urlApi+'/imagenes/'+usuario.boleta" contain aspect-ratio="2">
           </v-img>
         </v-card-text>
 
@@ -68,7 +68,7 @@
 
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="red" dark >
+          <v-btn color="red" dark @click="invalidarBoleta">
             Boleta Invalida
           </v-btn>
           <v-btn color="gray"  @click="dialog = false">
@@ -84,6 +84,7 @@
 import axios from "axios";
 import Swal from "sweetalert2";
 import MenuAdministrador from "../../menu/MenuAdministrador.vue";
+import MensajeEmail from '@/utils/emailPersonalizado.js'
 export default {
   components: {
     MenuAdministrador,
@@ -101,12 +102,18 @@ export default {
       { text: "Estado", value: "estado" },
       { text: "Opciones", value: "opciones", sortable: false },
     ],
+    usuario:[],
     suscripcion:{
       idsuscripcion:1,
       numeroboleta:'',
       boleta:'',
       estado:''
-    }
+    },
+    mensajeSMS:{
+      body: "",
+      from: "+19853284441",
+      to: "+502"
+    },
   }),
   created() {
     this.main();
@@ -132,11 +139,25 @@ export default {
     },
     verBoleta(item){
       this.dialog = true;
-      this.suscripcion.idsuscripcion = item.idsuscripcion
-      this.suscripcion.boleta = item.boleta
-      this.suscripcion.estado = item.estado 
-      this.suscripcion.numeroboleta = item.numeroboleta 
-      console.log( this.suscripcion)
+      this.usuario = item
+    },
+    async invalidarBoleta(){
+      const suscripcion = {
+        boleta:'default.png',
+        numeroboleta:"0",
+        estado:'Inscrito',
+      }
+      try {
+        await axios.put(`${this.urlApi}/suscripciones/${this.usuario.idsuscripcion}`, suscripcion);
+        this.main()
+        await this.envioNotificaciones()
+        Swal.fire('Pago Anulado Exitosamente','','success')
+      } catch (error) {
+        this.dialog=false
+        console.log(error)
+        Swal.fire('Error al anular boleta','','error')
+      }
+      
     },
     async eliminar(item) {
       try {
@@ -177,7 +198,29 @@ export default {
         console.log(error);
       }
     },
+   async envioNotificaciones(){
+            
+          
+          this.mensajeSMS.body = `Su boleta de pago ha sido anulada vuelva a subir una boleta valida`
+          this.mensajeSMS.to = this.mensajeSMS.to+this.usuario.telefono
 
+            const contenido={
+                titulo:`Pago Anulado`,
+                texto:`Su boleta de pago al evento ${this.usuario.evento}   
+                    ha sido anulada vuelva a subir una boleta valida.`
+            }
+            const mensajeEmail =  MensajeEmail(this.usuario,contenido)
+            try {
+               //Enviamos mensaje al telefono del usuario 
+               await axios.post(`${this.urlApi}/usuarios/mensaje`,this.mensajeSMS)
+                //Enviamos Correo al usuario 
+                await axios.post(`${this.urlApi}/usuarios/enviarcorreo`,mensajeEmail)
+              this.dialog=false
+            } catch (error) {
+              this.dialog=false
+                console.log(error)
+            }
+    },
     //Notificacion Swal
     notificationSwal(icon, title, text) {
       Swal.fire({
