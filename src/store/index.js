@@ -7,8 +7,8 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    //urlapi:'https://eventosumg.microsystems.com.gt/api/v1',
-    urlapi:'http://[::1]:1990/api/v1',
+    urlapi:'https://eventosumg.microsystems.com.gt/api/v1',
+    //urlapi:'http://[::1]:1990/api/v1',
     currentuser:{IdUsuario:true}
   },
   mutations: {

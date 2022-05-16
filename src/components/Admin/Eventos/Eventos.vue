@@ -61,7 +61,6 @@ export default {
       },
 
       deleteItem (datoevento) {
-        console.log('Si llego el emit==>',datoevento)
         Swal.fire({
           title: 'Esta Seguro?',
           text: "El registro será eliminado!",

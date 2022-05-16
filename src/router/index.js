@@ -26,7 +26,8 @@ import CrearEditarConferencista from '../components/Admin/Conferencistas/CrearEd
 import MostrarConferencista from '../components/Admin/Conferencistas/MostrarConferencista.vue'
 //import Pruebas from '../components/Admin/Conferencistas/MostrarConferencista.vue'
 
-//
+//-----Ruta validar Gafete --------
+import ValidarGafete from '../components/Gafete/ValidarGafete.vue'
 
 
 Vue.use(VueRouter)
@@ -38,16 +39,16 @@ const routes = [
     component: Inicio,
     meta:{protegido:false}
   },
-  // {
-  //   path: '/pruebas/:id?',
-  //   name: 'Pruebas',
-  //   component: Pruebas,
-  //   meta:{protegido:false}
-  // },
   {
     path: '/login',
     name: 'Login',
     component: Login,
+    meta:{protegido:false}
+  },
+  {
+    path: '/validargafete/:idsuscripcion?',
+    name: 'ValidarGafete',
+    component: ValidarGafete,
     meta:{protegido:false}
   },
   {
