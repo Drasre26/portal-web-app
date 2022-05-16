@@ -21,7 +21,7 @@
           aspect-ratio="1.7"
           class="rounded-lg"
         ></v-img>
-        <v-btn color="red" x-large dark class="ma-4" v-if="getUsuario" @click="sucripcionEvento">Suscribirme al EVENTO</v-btn>
+        <v-btn color="red" x-large dark class="ma-4" v-if="getUsuario && !suscrito" @click="sucripcionEvento">Suscribirme al EVENTO</v-btn>
       </v-col>
     </v-row>
   </div>
@@ -35,6 +35,11 @@ import axios from 'axios';
 export default {
   props: ['evento'],
   components: { FlipCountdown },
+  data() {
+    return {
+      suscrito:false,
+    }
+  },
   computed:{
       urlApi(){
             return this.$store.getters.getUrlApi
@@ -43,7 +48,23 @@ export default {
           return this.$store.getters.usuarioAuth.usuario
         },  
   },
+  created(){
+    this.main()
+  },
   methods:{
+    async main() {
+     // console.log(usuario)
+      if (this.getUsuario) {
+        try {
+         const {data} = await axios.get( `${this.urlApi}/suscripciones/usuario/${this.getUsuario.idusuario}`);
+          this.suscrito = data.find(ev=>ev.idevento==this.evento.idevento) 
+        } catch (error) {
+           this.suscrito=false;
+          console.log(error);
+        }
+      }
+      
+    },
     async sucripcionEvento(){
      const suscripcion = {
         idevento:this.evento.idevento,
@@ -52,8 +73,10 @@ export default {
 
       try {
         await axios.post(`${this.urlApi}/suscripciones`,suscripcion)
+        this.suscrito=true
         this.notificacionUsuario()
       } catch (error) {
+        this.suscrito=false;
         console.log(error)
         Swal.fire('Error al Suscribirse al evento','','error')
       }

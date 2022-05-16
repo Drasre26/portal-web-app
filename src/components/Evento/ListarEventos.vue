@@ -67,7 +67,6 @@ export default {
        try {
          const {data} =  await axios.get(`${this.urlApi}/eventos`)
            this.eventos=data
-           console.log(this.eventos)
        } catch (error) {
            console.log(error)
        }      
