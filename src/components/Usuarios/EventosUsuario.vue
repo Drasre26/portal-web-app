@@ -218,12 +218,12 @@ export default {
     },
     async impresionGafete(item) {
       const { usuario } = this.$store.getters.usuarioAuth;
+      usuario.idsuscripcion=item.idsuscripcion
       usuario.evento = item.titulo
       usuario.fechaevento =dayjs(item.fecha).format('DD-MM-YYYY')
       /* ---------------------- IMPRESION DE GAFETES ----------------------  */
       try {
         //Enviamos por el metodo post los participantes seleccionados para imprimir su gafete
-        console.log(usuario)
         await axios.post(  `https://eventosumg.microsystems.com.gt/pdf/gafete.php`, [usuario]);
 
         //Una vez generado el pdf con todos los gafetes lo abrimos
@@ -233,10 +233,14 @@ export default {
       }
     },
     async impresionDiploma(item) {
+      const { usuario } = this.$store.getters.usuarioAuth;
+      usuario.idsuscripcion=item.idsuscripcion
+      usuario.evento = item.titulo
+      usuario.fechaevento =dayjs(item.fecha).format('DD-MM-YYYY')
       /* ---------------------- IMPRESION DE GAFETES ----------------------  */
       try {
         //Enviamos por el metodo post los participantes seleccionados para imprimir su gafete
-        await axios.post(  `https://eventosumg.microsystems.com.gt/pdf/diploma.php`,item);
+        await axios.post(  `https://eventosumg.microsystems.com.gt/pdf/diploma.php`,[usuario]);
 
         //Una vez generado el pdf con todos los gafetes lo abrimos
         window.open("https://eventosumg.microsystems.com.gt/pdf/archivos/diplomas.pdf", "blank");
